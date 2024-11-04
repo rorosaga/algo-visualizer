@@ -35,4 +35,6 @@ cmrc_add_resource_library(resources ALIAS resources::rc NAMESPACE algos_resource
 
 # Add the src directory
 add_subdirectory(src)
+enable_testing()
+add_subdirectory(tests)
 
