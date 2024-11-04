@@ -1,4 +1,4 @@
-name: algo_visualizer
+name: visualizer
 channels:
   - conda-forge
   - defaults
