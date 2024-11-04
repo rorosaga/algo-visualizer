@@ -12,3 +12,8 @@ target_link_libraries(visualizer PRIVATE resources)
 # Main executable
 add_executable(main main.cpp)
 target_link_libraries(main PRIVATE visualizer resources)
+
+add_library(algorithm OBJECT algorithm.cpp)
+
+add_executable(test_algos test_algos.cpp)
+target_link_libraries(test_algos PRIVATE algorithm)
