@@ -1,0 +1,15 @@
+name: cycles
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - cmake
+  - make
+  - clangxx
+  - doxygen
+  - sfml==2.6.*
+  - pip 
+  - pip:
+    - breathe==4.35.0
+    - sphinx==7.4.7
+    - sphinx_rtd_theme==2.0.0
