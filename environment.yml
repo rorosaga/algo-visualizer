@@ -1,4 +1,4 @@
-name: cycles
+name: visualizer
 channels:
   - conda-forge
   - defaults
@@ -8,7 +8,7 @@ dependencies:
   - clangxx
   - doxygen
   - sfml==2.6.*
-  - pip 
+  - pip
   - pip:
     - breathe==4.35.0
     - sphinx==7.4.7
