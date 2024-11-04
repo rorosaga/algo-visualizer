@@ -5,7 +5,7 @@
 using namespace visualizer;
 
 int main() {
-    SortVisualizer visualizer(800, 600);
+    SortVisualizer visualizer(1000, 600);
 
     // Example array states (simulate sorting steps)
     std::vector<int> initial = {50, 100, 150, 200, 250, 300, 350, 400};
