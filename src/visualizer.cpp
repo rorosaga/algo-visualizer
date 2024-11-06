@@ -5,7 +5,8 @@ namespace visualizer {
 
     template <typename Container>
     Visualizer<Container>::Visualizer(int width, int height, int speed, std::string heading) :
-        window(sf::VideoMode(width, height), heading), rectWidth(width / 10), 
+        window(sf::VideoMode(width, height), heading), 
+        rectWidth(width / 10), 
         spacing(width / 10), 
         height(height), 
         speed(speed), 
@@ -14,9 +15,13 @@ namespace visualizer {
         }
 
     SortVisualizer::SortVisualizer(int width, int height, int size, int speed, std::string heading)
-        : Visualizer<std::vector<int>>(width, height, speed, heading), // Call base class constructor
-          size(size) { // Initialize derived class member
+        : Visualizer<std::vector<int>>(width, height, speed, heading),
+        size(size)
+        { // Initialize derived class member
 
+        this->rectWidth=width/(size+10);
+        this->spacing=width/(size+10);
+        
         // Load the font after initializing the window
         auto fs = algos_resources::getResourceFile("resources/Pixellettersfull-BnJ5.ttf");
         if (!this->font.loadFromMemory(fs.begin(), fs.size())) {
@@ -92,8 +97,19 @@ namespace visualizer {
             endText.setFillColor(sf::Color::Green);
             endText.setPosition((window.getSize().x - endText.getLocalBounds().width) / 2, 10);
             window.draw(endText);
+            window.display();
+
+            // Keep the window open until the user closes it
+            while (window.isOpen()) {
+                while (window.pollEvent(event)) {
+                    if (event.type == sf::Event::Closed) {
+                        window.close();
+                        return;
+                    }
+                }
+            }
         }
-    }
+    }  
 
     SearchVisualizer::SearchVisualizer(int width, int height, int speed, std::string heading) 
         : Visualizer<std::vector<std::vector<int>>>(width, height, speed, heading) { // Call base class constructor
