@@ -5,63 +5,58 @@
 
 namespace visualizer {
 
-    class SortVisualizer {
+    template <typename Container>
+    class Visualizer {
     public:
-        /**
-         * @brief Construct a new Sort Visualizer object
-         * 
-         * @param width Width of the window
-         * @param height Height of the window
-         * @param size Size of the array
-         * @param speed Speed of the visualization in milliseconds
-         * 
-         * @note The size of the array is used to calculate the width of each rectangle representation
-         * of an element in the array for rendering.
-         */
-        SortVisualizer(int width, int height, int size, int speed, std::string heading);
-
-        /**
-         * @brief Adds a state of the array to the collection of states to visualize.
-         * 
-         * @param array Array to add to the collection of states
-         * 
-         * @note SortVisualizer recquires a collection of states to visualize the sorting process.
-         * Each state is a snapshot of the array at a specific point in time.
-         */
-        void addState(const std::vector<int>& array);
-
-        /**
-         * @brief Visualizes the sorting process.
-         * 
-         * @note This function should be called after adding all the states to visualize.
-         */
-        void visualizeSorting();
+        virtual void addState(const Container& array) = 0; 
+        virtual void visualize() = 0;
+        Visualizer(int width, int height, int speed, std::string heading);
 
     private:
-        /**
-         * @brief Renders the current state of the array.
-         * 
-         * @param array Array to render
-         * 
-         * @note This function is called by visualizeSorting() to render each state of the array.
-         */
-        void renderState(const std::vector<int>& array);
-
-        // SFML window for rendering
+        virtual void renderState(const Container& array) = 0;
+    protected:
         sf::RenderWindow window;
-
-        // Collection of array states to visualize each sorting step
-        std::vector<std::vector<int>> states;
-
-        // Dimensions for rendering (rectangle width and spacing)
+        std::vector<Container> states;
         int rectWidth;
         int spacing;
         int height;
         int speed;
         std::string heading;
-
-        // Font for text rendering
         sf::Font font;
+    };
+
+    class SearchVisualizer : public Visualizer<std::vector<std::vector<int>>> {
+    public:
+        // Constructor: Initializes the window with the specified width and height.
+        SearchVisualizer(int width, int height, int speed, std::string heading);
+
+        // Adds a new state (array configuration) to be visualized.
+        void addState(const std::vector<std::vector<int>>& matrix) override;
+
+        // Runs through all stored states to visualize the search process.
+        void visualize() override;
+
+    private:
+        // Helper function to render a specific state of the matrix.
+        void renderState(const std::vector<std::vector<int>>& matrix) override;
+    };
+
+    class SortVisualizer : public Visualizer<std::vector<int>> {
+    public:
+        // Constructor: Initializes the window with the specified width and height.
+        SortVisualizer(int width, int height, int size, int speed, std::string heading);
+
+        // Adds a new state (array configuration) to be visualized.
+        virtual void addState(const std::vector<int>& matrix) override;
+
+        // Runs through all stored states to visualize the sort process.
+        virtual void visualize() override;
+
+    private:
+        // Helper function to render a specific state of the matrix.
+        void renderState(const std::vector<int>& matrix) override;
+
+        int size;
     };
 
 } // namespace visualizer

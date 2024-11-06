@@ -52,5 +52,35 @@ namespace algorithm {
      * @param stepCallback lambda function to call after each step letting the caller know the current state of the array
      */
     void bogoSort(std::vector<int>& arr, std::function<void(const std::vector<int>&)> stepCallback = [](const std::vector<int>&) {});
+    
+    /**
+     * @brief BFS algorithm that finds the shortest path from the start node to the end node
+     * @param graph The graph to search
+     * @param start The starting node
+     * @param end The ending node
+     * @param stepCallback lambda function to call after each step letting the caller know the current state of the graph
+     */
+
+    void bfs(std::vector<std::vector<int>>& graph, int start, int end, std::function<void(const std::vector<std::vector<int>>&)> stepCallback = [](const std::vector<std::vector<int>>&) {});
+
+    /**
+     * @brief DFS algorithm that finds the shortest path from the start node to the end node
+     * @param graph The graph to search
+     * @param start The starting node
+     * @param end The ending node
+     * @param stepCallback lambda function to call after each step letting the caller know the current state of the graph
+     */
+
+    void dfs(std::vector<std::vector<int>>& graph, int start, int end, std::function<void(const std::vector<std::vector<int>>&)> stepCallback = [](const std::vector<std::vector<int>>&) {});
+
+    /**
+     * @brief A* algorithm that finds the shortest path from the start node to the end node using the manhattan distance heuristic
+     * @param graph The graph to search
+     * @param start The starting node
+     * @param end The ending node
+     * @param stepCallback lambda function to call after each step letting the caller know the current state of the graph
+     */
+
+    void aStar(std::vector<std::vector<int>>& graph, int start, int end, std::function<void(const std::vector<std::vector<int>>&)> stepCallback = [](const std::vector<std::vector<int>>&) {});
 
 }

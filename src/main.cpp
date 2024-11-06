@@ -25,7 +25,7 @@ int main() {
         visualizer.addState(step);
     }
 
-    visualizer.visualizeSorting();
+    visualizer.visualize();
 
     return 0;
 }
