@@ -1,23 +1,36 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include <string>
 
 namespace visualizer {
 
     class Visualizer {
     public:
-        // Constructor: Initializes the window with the specified width and height.
-        Visualizer(int width, int height);
+        /**
+         * @brief Construct a new Sort Visualizer object
+         * 
+         * @param width Width of the window
+         * @param height Height of the window
+         * @param size Size of the array
+         * @param speed Speed of the visualization in milliseconds
+         * 
+         * @note The size of the array is used to calculate the width of each rectangle representation
+         * of an element in the array for rendering.
+         */
+        SortVisualizer(int width, int height, int size, int speed, std::string heading);
 
         // Adds a new state (array configuration) to be visualized.
-        virtual void addState(const std::vector<std::vector<int>>& matrix) = 0;
+        void addState(const std::vector<int>& array);
 
-        // Runs through all stored states to visualize the process.
-        virtual void visualize() = 0;
+        // Runs through all stored states to visualize the sorting process.
+        void visualizeSorting();
 
-    protected:
-        // Helper function to render a specific state of the matrix.
-        virtual void renderState(const std::vector<std::vector<int>>& matrix) = 0;
+        void trackState(const std::vector<int>& array);
+
+    private:
+        // Helper function to render a specific state of the array.
+        void renderState(const std::vector<int>& array);
 
         // SFML window for rendering
         sf::RenderWindow window;
@@ -28,6 +41,9 @@ namespace visualizer {
         // Dimensions for rendering (rectangle width and spacing)
         int rectWidth;
         int spacing;
+        int height;
+        int speed;
+        std::string heading;
 
         // Font for text rendering
         sf::Font font;
