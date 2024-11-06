@@ -3,61 +3,62 @@
 
 namespace visualizer {
 
-    SortVisualizer::SortVisualizer(int width, int height)
-        : window(sf::VideoMode(width, height), "Sort Visualizer"), rectWidth(30), spacing(40) {
-        window.setFramerateLimit(60);
-        auto fs = algos_resources::getResourceFile("resources/Pixellettersfull-BnJ5.ttf");
-        if (!this->font.loadFromMemory(fs.begin(), fs.size())) {
-            std::cerr << "Failed to load font." << std::endl;
+    Visualizer::Visualizer(int width, int height)
+        : window(sf::VideoMode(width, height), "Visualizer"), rectWidth(10), spacing(15) {
+        // Load font
+        if (!font.loadFromFile("arial.ttf")) {
+            // Handle error
         }
     }
-    
 
-    void SortVisualizer::addState(const std::vector<int>& array) {
-        this->states.push_back(array);
+    SearchVisualizer::SearchVisualizer(int width, int height)
+        : Visualizer(width, height) {}
+
+    void SearchVisualizer::addState(const std::vector<std::vector<int>>& matrix) {
+        states.push_back(matrix);
     }
 
-    void SortVisualizer::visualizeSorting() {
-        sf::Event event;
-
-        while (window.isOpen()) {
-            while (window.pollEvent(event)) {
-                if (event.type == sf::Event::Closed) {
-                    window.close();
-                    return;
-                }
-            }
-
-            // Render each state of the sorting process
-            for (const auto& state : this->states) {
-                window.clear();
-                renderState(state);
-                window.display();
-                sf::sleep(sf::milliseconds(100)); // Adjust for speed
-            }
-
-            // Display the final sorted state with the "Sorting complete!" message
-            window.clear();
-            renderState(this->states.back()); // Render the final sorted state
-            sf::Text endText("Sorting complete!", font, 40);
-            endText.setPosition((window.getSize().x - endText.getLocalBounds().width) / 2, 10);
-            window.draw(endText);
+    void SearchVisualizer::visualize() {
+        for (const auto& state : states) {
+            renderState(state);
             window.display();
+            sf::sleep(sf::seconds(1)); // Pause for a second between states
+        }
+    }
 
-            // Keep the window open until the user closes it
-            while (window.isOpen()) {
-                while (window.pollEvent(event)) {
-                    if (event.type == sf::Event::Closed) {
-                        window.close();
-                        return;
-                    }
-                }
+    void SearchVisualizer::renderState(const std::vector<std::vector<int>>& matrix) {
+        window.clear();
+        // Render the matrix state (implementation depends on your visualization needs)
+        // Example: Draw rectangles for each element in the matrix
+        for (size_t i = 0; i < matrix.size(); ++i) {
+            for (size_t j = 0; j < matrix[i].size(); ++j) {
+                sf::RectangleShape rect(sf::Vector2f(rectWidth, matrix[i][j]));
+                rect.setPosition(j * spacing, i * spacing);
+                rect.setFillColor(sf::Color::White);
+                window.draw(rect);
             }
         }
-    }  
+    }
 
+    SortVisualizer::SortVisualizer(int width, int height)
+        : Visualizer(width, height) {}
 
-    void SortVisualizer::renderState(const std::vector<int>& array) {
+    void SortVisualizer::addState(const std::vector<std::vector<int>>& matrix) {
+        states.push_back(matrix);
+    }
+
+    void SortVisualizer::visualize() {
+        for (const auto& state : states) {
+            renderState(state);
+            window.display();
+            sf::sleep(sf::seconds(1)); // Pause for a second between states
+        }
+    }
+
+    void SortVisualizer::renderState(const std::vector<std::vector<int>>& matrix) {
+        window.clear();
+        // Assuming matrix has only one row for sorting visualization
+        const auto& array = matrix[0];
         // Calculate the total width of the visualized array
         float totalWidth = array.size() * spacing - (spacing - rectWidth);
         float startX = (window.getSize().x - totalWidth) / 2; // Start position for centering
