@@ -1,6 +1,8 @@
 #pragma once
 #include <cmrc/cmrc.hpp>
+
 CMRC_DECLARE(algos_resources);
+
 namespace algos_resources{
   auto getResourceFile(std::string path){
     auto fs = cmrc::algos_resources::get_filesystem();

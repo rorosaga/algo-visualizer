@@ -1,38 +1,62 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include <string>
 
 namespace visualizer {
 
-    class SortVisualizer {
+    template <typename Container>
+    class Visualizer {
     public:
-        // Constructor: Initializes the window with the specified width and height.
-        SortVisualizer(int width, int height);
-
-        // Adds a new state (array configuration) to be visualized.
-        void addState(const std::vector<int>& array);
-
-        // Runs through all stored states to visualize the sorting process.
-        void visualizeSorting();
-
-        void trackState(const std::vector<int>& array);
+        virtual void addState(const Container& array) = 0; 
+        virtual void visualize() = 0;
+        Visualizer(int width, int height, int speed, std::string heading);
 
     private:
-        // Helper function to render a specific state of the array.
-        void renderState(const std::vector<int>& array);
-
-        // SFML window for rendering
+        virtual void renderState(const Container& array) = 0;
+    protected:
         sf::RenderWindow window;
-
-        // Collection of array states to visualize each sorting step
-        std::vector<std::vector<int>> states;
-
-        // Dimensions for rendering (rectangle width and spacing)
+        std::vector<Container> states;
         int rectWidth;
         int spacing;
-
-        // Font for text rendering
+        int height;
+        int speed;
+        std::string heading;
         sf::Font font;
+    };
+
+    class SearchVisualizer : public Visualizer<std::vector<std::vector<int>>> {
+    public:
+        // Constructor: Initializes the window with the specified width and height.
+        SearchVisualizer(int width, int height, int speed, std::string heading);
+
+        // Adds a new state (array configuration) to be visualized.
+        void addState(const std::vector<std::vector<int>>& matrix) override;
+
+        // Runs through all stored states to visualize the search process.
+        void visualize() override;
+
+    private:
+        // Helper function to render a specific state of the matrix.
+        void renderState(const std::vector<std::vector<int>>& matrix) override;
+    };
+
+    class SortVisualizer : public Visualizer<std::vector<int>> {
+    public:
+        // Constructor: Initializes the window with the specified width and height.
+        SortVisualizer(int width, int height, int size, int speed, std::string heading);
+
+        // Adds a new state (array configuration) to be visualized.
+        virtual void addState(const std::vector<int>& matrix) override;
+
+        // Runs through all stored states to visualize the sort process.
+        virtual void visualize() override;
+
+    private:
+        // Helper function to render a specific state of the matrix.
+        void renderState(const std::vector<int>& matrix) override;
+
+        int size;
     };
 
 } // namespace visualizer
