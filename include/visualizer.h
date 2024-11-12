@@ -45,6 +45,7 @@ namespace visualizer {
     public:
         // Constructor: Initializes the window with the specified width and height.
         SortVisualizer(int width, int height, int size, int speed, std::string heading);
+        SortVisualizer(int width, int height, int size, int speed, std::string heading, std::string timeComplexity);
 
         // Adds a new state (array configuration) to be visualized.
         virtual void addState(const std::vector<int>& matrix) override;
@@ -57,6 +58,7 @@ namespace visualizer {
         void renderState(const std::vector<int>& matrix) override;
 
         int size;
+        std::string timeComplexity;
     };
 
 } // namespace visualizer

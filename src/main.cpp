@@ -15,7 +15,7 @@ int main() {
     
     algorithm::randomNumberGen(arr, 300, 0, 100);
 
-    SortVisualizer visualizer(1000, 1000, arr.size(), 50, "Merge Sort");
+    SortVisualizer visualizer(1000, 1000, arr.size(), 50, "Merge Sort", "O(n log n)");
 
     algorithm::iterMergeSort(arr, [&sortingSteps](const std::vector<int>& step){
         sortingSteps.push_back(step);

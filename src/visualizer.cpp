@@ -18,6 +18,21 @@ namespace visualizer {
         : Visualizer<std::vector<int>>(width, height, speed, heading),
         size(size)
         { // Initialize derived class member
+        this->timeComplexity = "null";
+        this->rectWidth=width/(size+10);
+        this->spacing=width/(size+10);
+        
+        // Load the font after initializing the window
+        auto fs = algos_resources::getResourceFile("resources/Pixellettersfull-BnJ5.ttf");
+        if (!this->font.loadFromMemory(fs.begin(), fs.size())) {
+            std::cerr << "Failed to load font." << std::endl;
+        }
+    }
+
+    SortVisualizer::SortVisualizer(int width, int height, int size, int speed, std::string heading, std::string timeComplexity)
+        : Visualizer<std::vector<int>>(width, height, speed, heading),
+        size(size), timeComplexity(timeComplexity)
+        { // Initialize derived class member
 
         this->rectWidth=width/(size+10);
         this->spacing=width/(size+10);
@@ -69,6 +84,43 @@ namespace visualizer {
             10 // Position 10 pixels from the top
         );
 
+        // Top right corner button to stop the visualization
+        sf::RectangleShape stopButton(sf::Vector2f(50, 50));
+        stopButton.setPosition(70, 20);
+        stopButton.setFillColor(sf::Color::Red);
+
+        // Text for the stop button
+        sf::Text stopText("Stop", font, 20);
+        stopText.setFillColor(sf::Color::White);
+        stopText.setPosition(77, 30);
+
+        sf::Text timeComplexityText;
+        if (this->timeComplexity != "null") {
+            timeComplexityText.setFont(font);
+            timeComplexityText.setString(this->timeComplexity);
+            timeComplexityText.setCharacterSize(40);
+            timeComplexityText.setFillColor(sf::Color::White);
+
+            // Position timeComplexityText in the top-right corner of the border box
+            float topRightX = window.getSize().x - 70 - timeComplexityText.getLocalBounds().width;
+            float topRightY = 25; // Align it with the top border line
+            timeComplexityText.setPosition(topRightX, topRightY);
+        }
+
+        // Define a VertexArray for a custom border with four corners
+        sf::VertexArray border(sf::LinesStrip, 5); // 5 points for a closed rectangle (back to the first point)
+
+        // Set each corner's position manually (adjust to your desired coordinates)
+        border[0].position = sf::Vector2f(40, 15); // Top-left corner
+        border[1].position = sf::Vector2f(window.getSize().x - 40, 15); // Top-right corner
+        border[2].position = sf::Vector2f(window.getSize().x - 40, window.getSize().y - 20); // Bottom-right corner
+        border[3].position = sf::Vector2f(40, window.getSize().y - 20); // Bottom-left corner
+        border[4].position = border[0].position; // Connect back to the first point to close the shape
+
+        // Set color for each vertex if desired (optional)
+        for (size_t i = 0; i < border.getVertexCount(); ++i) {
+            border[i].color = sf::Color::Yellow;
+        }
         while (window.isOpen()) {
 
             // This allows the window to not close automatically
@@ -84,6 +136,13 @@ namespace visualizer {
             // Then, it gets cleared and the next state is rendered
             for (const auto& state : this->states) {
                 window.clear();
+
+                // Add button to stop the visualization
+                window.draw(stopButton);
+                window.draw(stopText);
+
+                if (this->timeComplexity != "null") {window.draw(timeComplexityText);}
+                window.draw(border);
                 window.draw(heading);
                 renderState(state);
                 window.display();
@@ -92,6 +151,12 @@ namespace visualizer {
 
             // Display the final sorted state with the "Sorting complete!" message
             window.clear();
+            if (this->timeComplexity != "null") {window.draw(timeComplexityText);}
+            // Set color for each vertex if desired (optional)
+            for (size_t i = 0; i < border.getVertexCount(); ++i) {
+                border[i].color = sf::Color::Green;
+            }
+            window.draw(border);
             renderState(this->states.back()); // Render the final sorted state
             sf::Text endText("Sorting complete!", font, 40);
             endText.setFillColor(sf::Color::Green);
