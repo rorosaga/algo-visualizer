@@ -1,11 +1,12 @@
 #include "visualizer.h"
 #include "resources.h"
+#include "algorithm.h"
 
 namespace visualizer {
 
     template <typename Container>
     Visualizer<Container>::Visualizer(int width, int height, int speed, std::string heading) :
-        window(sf::VideoMode(width, height), heading),
+        window(sf::VideoMode(width, height), "Visualizer"),
         rectWidth(width / 10),
         spacing(width / 10),
         height(height),
@@ -75,79 +76,6 @@ namespace visualizer {
     }
 
 
-
-    // void SortVisualizer::playSorting() {
-
-
-    //     do {
-    //         // Draw the headers and basic ui stuff
-    //         window.clear();
-    //         // if (this->timeComplexity != "null") {window.draw(timeComplexityText);}
-    //         // window.draw(border);
-    //         // window.draw(heading);
-
-    //         window.draw(stopButton);
-    //         window.draw(stopText);
-
-    //         // check if stop button is clicked
-    //         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-    //             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    //             if (stopButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-    //                 std::cout << "Stop button clicked" << std::endl;
-    //                 this->isPaused = true;
-    //             }
-    //         }
-
-    //         renderState(*iterator);
-
-    //         window.display();
-    //         sf::sleep(sf::milliseconds(this->speed)); // Adjust for speed
-    //         iterator++;
-    //     } while (! this->isPaused && iterator != this->states.end());
-
-    // }
-
-
-    // void SortVisualizer::pauseSorting() {
-
-
-
-        // Draw the headers and basic ui stuff
-        // window.clear();
-        // // if (this->timeComplexity != "null") {window.draw(timeComplexityText);}
-        // // window.draw(border);
-        // // window.draw(heading);
-
-        // window.draw(playButton);
-        // window.draw(playText);
-
-        // window.draw(undoButton);
-        // window.draw(undoText);
-
-
-        // if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        //     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-        //     if (playButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-        //         std::cout << "Play button clicked" << std::endl;
-        //         this->isPaused = false;
-        //     }
-        // }
-
-        // // check if undo button is clicked
-        // if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        //     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-        //     if (undoButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-        //         std::cout << "Undo button clicked" << std::endl;
-        //         if (iterator != this->states.begin()) {
-        //             iterator--;
-        //         }
-        //     }
-        // }
-
-        // renderState(*iterator);
-
-        // window.display();
-    // }
 
     void SortVisualizer::visualize() {
         sf::Event event;
@@ -232,12 +160,12 @@ namespace visualizer {
             window.clear();
             sf::Text welcome("Welcome to the Sorting Visualizer!", font, 40);
             welcome.setFillColor(sf::Color::Yellow);
-            welcome.setPosition((window.getSize().x - welcome.getLocalBounds().width) / 2, 10);
+            welcome.setPosition((window.getSize().x - welcome.getLocalBounds().width) / 2, (window.getSize().y - welcome.getLocalBounds().height) / 2);
             window.draw(welcome);
 
             sf::Text instructions("Press any key to start the visualization.", font, 20);
             instructions.setFillColor(sf::Color::White);
-            instructions.setPosition((window.getSize().x - instructions.getLocalBounds().width) / 2, 60);
+            instructions.setPosition((window.getSize().x - instructions.getLocalBounds().width) / 2, ((window.getSize().y - welcome.getLocalBounds().height) / 2) + 50 );
             window.draw(instructions);
 
             window.display();

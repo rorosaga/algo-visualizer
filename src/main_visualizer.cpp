@@ -12,16 +12,15 @@ int main() {
     std::vector<int> arr;
 
     std::vector<std::vector<int>> sortingSteps;
-    
+
     algorithm::randomNumberGen(arr, 300, 0, 100);
 
-    SortVisualizer visualizer(1000, 1000, arr.size(), 300, "Merge Sort", "O(n log n)");
+    SortVisualizer visualizer(1000, 1000, arr.size(), 50, "Merge Sort", "O(n log n)");
 
     algorithm::iterMergeSort(arr, [&sortingSteps](const std::vector<int>& step){
         sortingSteps.push_back(step);
     });
 
-    
 
     // std::sort(arr.begin(), arr.end(), [&sortingSteps, &arr](int a, int b) {
     //     sortingSteps.push_back(arr);
