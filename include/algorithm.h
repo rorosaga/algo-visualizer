@@ -5,6 +5,20 @@
 #include <random>
 
 namespace algorithm {
+
+    /**
+     * @brief Enum class to represent the different sorting algorithms
+     */
+    enum class SortType {
+        UNINITIALIZED, // default value
+        SELECTION,
+        BUBBLE,
+        INSERTION,
+        MERGE,
+        QUICK,
+        BOGO
+    };
+
     void randomNumberGen(std::vector<int>& arr, int size, int min, int max);
 
     /**
@@ -52,7 +66,7 @@ namespace algorithm {
      * @param stepCallback lambda function to call after each step letting the caller know the current state of the array
      */
     void bogoSort(std::vector<int>& arr, std::function<void(const std::vector<int>&)> stepCallback = [](const std::vector<int>&) {});
-    
+
     /**
      * @brief BFS algorithm that finds the shortest path from the start node to the end node
      * @param graph The graph to search
