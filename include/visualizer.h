@@ -8,7 +8,7 @@ namespace visualizer {
     template <typename Container>
     class Visualizer {
     public:
-        virtual void addState(const Container& array) = 0; 
+        virtual void addState(const Container& array) = 0;
         virtual void visualize() = 0;
         Visualizer(int width, int height, int speed, std::string heading);
 
@@ -16,7 +16,12 @@ namespace visualizer {
         virtual void renderState(const Container& array) = 0;
     protected:
         sf::RenderWindow window;
+        bool showWelcome = true;
+        bool isPaused = false;
+
         std::vector<Container> states;
+        int currentStep = 0;
+
         int rectWidth;
         int spacing;
         int height;

@@ -5,11 +5,11 @@ namespace visualizer {
 
     template <typename Container>
     Visualizer<Container>::Visualizer(int width, int height, int speed, std::string heading) :
-        window(sf::VideoMode(width, height), heading), 
-        rectWidth(width / 10), 
-        spacing(width / 10), 
-        height(height), 
-        speed(speed), 
+        window(sf::VideoMode(width, height), heading),
+        rectWidth(width / 10),
+        spacing(width / 10),
+        height(height),
+        speed(speed),
         heading(heading) {
             window.setFramerateLimit(60);
         }
@@ -21,7 +21,7 @@ namespace visualizer {
         this->timeComplexity = "null";
         this->rectWidth=width/(size+10);
         this->spacing=width/(size+10);
-        
+
         // Load the font after initializing the window
         auto fs = algos_resources::getResourceFile("resources/Pixellettersfull-BnJ5.ttf");
         if (!this->font.loadFromMemory(fs.begin(), fs.size())) {
@@ -36,20 +36,19 @@ namespace visualizer {
 
         this->rectWidth=width/(size+10);
         this->spacing=width/(size+10);
-        
+
         // Load the font after initializing the window
         auto fs = algos_resources::getResourceFile("resources/Pixellettersfull-BnJ5.ttf");
         if (!this->font.loadFromMemory(fs.begin(), fs.size())) {
             std::cerr << "Failed to load font." << std::endl;
         }
     }
-    
+
     void SortVisualizer::addState(const std::vector<int>& array) {
         this->states.push_back(array);
     }
 
     void SortVisualizer::renderState(const std::vector<int>& array) {
-
         // Calculate the total width of the visualized array
         float totalWidth = array.size() * spacing - (spacing - rectWidth);
         float startX = (window.getSize().x - totalWidth) / 2; // Start position for centering
@@ -61,7 +60,7 @@ namespace visualizer {
             // Create and position the rectangle
             float barHeight = (array[i] / static_cast<float>(max)) * (0.3f * height);
             sf::RectangleShape rect(sf::Vector2f(rectWidth, barHeight));
-            
+
             rect.setPosition(startX + i * spacing, window.getSize().y - barHeight - 30);
             rect.setFillColor(sf::Color::White);
 
@@ -75,6 +74,81 @@ namespace visualizer {
         }
     }
 
+
+
+    // void SortVisualizer::playSorting() {
+
+
+    //     do {
+    //         // Draw the headers and basic ui stuff
+    //         window.clear();
+    //         // if (this->timeComplexity != "null") {window.draw(timeComplexityText);}
+    //         // window.draw(border);
+    //         // window.draw(heading);
+
+    //         window.draw(stopButton);
+    //         window.draw(stopText);
+
+    //         // check if stop button is clicked
+    //         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    //             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    //             if (stopButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+    //                 std::cout << "Stop button clicked" << std::endl;
+    //                 this->isPaused = true;
+    //             }
+    //         }
+
+    //         renderState(*iterator);
+
+    //         window.display();
+    //         sf::sleep(sf::milliseconds(this->speed)); // Adjust for speed
+    //         iterator++;
+    //     } while (! this->isPaused && iterator != this->states.end());
+
+    // }
+
+
+    // void SortVisualizer::pauseSorting() {
+
+
+
+        // Draw the headers and basic ui stuff
+        // window.clear();
+        // // if (this->timeComplexity != "null") {window.draw(timeComplexityText);}
+        // // window.draw(border);
+        // // window.draw(heading);
+
+        // window.draw(playButton);
+        // window.draw(playText);
+
+        // window.draw(undoButton);
+        // window.draw(undoText);
+
+
+        // if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        //     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        //     if (playButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+        //         std::cout << "Play button clicked" << std::endl;
+        //         this->isPaused = false;
+        //     }
+        // }
+
+        // // check if undo button is clicked
+        // if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        //     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        //     if (undoButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+        //         std::cout << "Undo button clicked" << std::endl;
+        //         if (iterator != this->states.begin()) {
+        //             iterator--;
+        //         }
+        //     }
+        // }
+
+        // renderState(*iterator);
+
+        // window.display();
+    // }
+
     void SortVisualizer::visualize() {
         sf::Event event;
         sf::Text heading(this->heading, font, 40); // Create the heading with a font size of 40
@@ -84,15 +158,36 @@ namespace visualizer {
             10 // Position 10 pixels from the top
         );
 
-        // Top right corner button to stop the visualization
+
+        // Stop button
         sf::RectangleShape stopButton(sf::Vector2f(50, 50));
-        stopButton.setPosition(70, 20);
+        stopButton.setPosition(50, 20);
         stopButton.setFillColor(sf::Color::Red);
 
         // Text for the stop button
         sf::Text stopText("Stop", font, 20);
         stopText.setFillColor(sf::Color::White);
-        stopText.setPosition(77, 30);
+        stopText.setPosition(57, 30);
+
+        // Play button
+        sf::RectangleShape playButton(sf::Vector2f(50, 50));
+        playButton.setPosition(110, 20);
+        playButton.setFillColor(sf::Color::Green);
+
+        // Play button text
+        sf::Text playText("Play", font, 20);
+        playText.setFillColor(sf::Color::Black);
+        playText.setPosition(117, 30);
+
+        // Undo button
+        sf::RectangleShape undoButton(sf::Vector2f(50, 50));
+        undoButton.setPosition(160, 20);
+        undoButton.setFillColor(sf::Color::Yellow);
+
+        // Undo button text
+        sf::Text undoText("Undo", font, 20);
+        undoText.setFillColor(sf::Color::Black);
+        undoText.setPosition(167, 30);
 
         sf::Text timeComplexityText;
         if (this->timeComplexity != "null") {
@@ -121,8 +216,9 @@ namespace visualizer {
         for (size_t i = 0; i < border.getVertexCount(); ++i) {
             border[i].color = sf::Color::Yellow;
         }
-        while (window.isOpen()) {
 
+        while (window.isOpen()) {
+            std::cout << "Window open" << std::endl;
             // This allows the window to not close automatically
             while (window.pollEvent(event)) {
                 if (event.type == sf::Event::Closed) {
@@ -131,23 +227,111 @@ namespace visualizer {
                 }
             }
 
-            // Render each state of the sorting process
-            // Each state is rendered for a short period of time
-            // Then, it gets cleared and the next state is rendered
-            for (const auto& state : this->states) {
-                window.clear();
+            std::cout << "Show welcome message" << std::endl;
+            // Display the welcome message
+            window.clear();
+            sf::Text welcome("Welcome to the Sorting Visualizer!", font, 40);
+            welcome.setFillColor(sf::Color::Yellow);
+            welcome.setPosition((window.getSize().x - welcome.getLocalBounds().width) / 2, 10);
+            window.draw(welcome);
 
-                // Add button to stop the visualization
-                window.draw(stopButton);
-                window.draw(stopText);
+            sf::Text instructions("Press any key to start the visualization.", font, 20);
+            instructions.setFillColor(sf::Color::White);
+            instructions.setPosition((window.getSize().x - instructions.getLocalBounds().width) / 2, 60);
+            window.draw(instructions);
 
-                if (this->timeComplexity != "null") {window.draw(timeComplexityText);}
-                window.draw(border);
-                window.draw(heading);
-                renderState(state);
-                window.display();
-                sf::sleep(sf::milliseconds(this->speed)); // Adjust for speed
+            window.display();
+
+            while (this->showWelcome) {
+                // Wait for any key press to start the visualization
+                while (window.pollEvent(event)) {
+                    if (event.type == sf::Event::KeyPressed) {
+                        std::cout << "Key pressed" << std::endl;
+                        this->showWelcome = false;
+                        break;
+                    }
+                }
             }
+
+            // While the visualization is paused, render the current state and the buttons to control the visualization
+            // if the play button is pressed, it will render the next state iteratively
+            while (currentStep < states.size()) {
+                if (this->isPaused) {
+                    std::cout << "Paused at step " << currentStep << std::endl;
+                    // Draw the headers and basic ui stuff
+                    window.clear();
+                    if (this->timeComplexity != "null") {window.draw(timeComplexityText);}
+                    window.draw(border);
+                    window.draw(heading);
+
+                    window.draw(playButton);
+                    window.draw(playText);
+
+                    window.draw(undoButton);
+                    window.draw(undoText);
+
+                    renderState(states[currentStep]);
+
+                    window.display();
+
+                    while (this->isPaused) {
+                        // to prevent the window from refreshing everytime, it simply waits for the user to click play or undo button
+                        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                            if (playButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                                    std::cout << "Play button clicked" << std::endl;
+                                    this->isPaused = false;
+                                    break;
+                                }
+                        }
+
+                        // check if undo button is clicked
+                        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                            if (undoButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                                std::cout << "Undo button clicked" << std::endl;
+                                if (currentStep > 0) {
+                                    currentStep--;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                } else {
+                    std::cout << "Run simulation" << std::endl;
+
+                    window.clear();
+                    if (this->timeComplexity != "null") {window.draw(timeComplexityText);}
+                    window.draw(border);
+                    window.draw(heading);
+
+                    window.draw(stopButton);
+                    window.draw(stopText);
+
+
+                    // check if stop button is clicked
+                    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                        if (stopButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                            std::cout << "Stop button clicked" << std::endl;
+                            this->isPaused = true;
+                        }
+                    }
+                    // std::cout << "current state: " << states[currentStep] << std::endl;
+
+                    renderState(states[currentStep]);
+
+                    window.display();
+                    sf::sleep(sf::milliseconds(this->speed)); // Adjust for speed
+                    currentStep++;
+                };
+            };
+
+
+            // Show the ending ui when the sorting is done
+            std::cout << "Sorting complete" << std::endl;
+            this->isPaused = true;
 
             // Display the final sorted state with the "Sorting complete!" message
             window.clear();
@@ -156,6 +340,7 @@ namespace visualizer {
             for (size_t i = 0; i < border.getVertexCount(); ++i) {
                 border[i].color = sf::Color::Green;
             }
+
             window.draw(border);
             renderState(this->states.back()); // Render the final sorted state
             sf::Text endText("Sorting complete!", font, 40);
@@ -174,9 +359,9 @@ namespace visualizer {
                 }
             }
         }
-    }  
+    }
 
-    SearchVisualizer::SearchVisualizer(int width, int height, int speed, std::string heading) 
+    SearchVisualizer::SearchVisualizer(int width, int height, int speed, std::string heading)
         : Visualizer<std::vector<std::vector<int>>>(width, height, speed, heading) { // Call base class constructor
         window.setFramerateLimit(60);
     }
@@ -185,7 +370,7 @@ namespace visualizer {
         states.push_back(matrix);
     }
 
-    
+
 
     void SearchVisualizer::visualize() {
         for (const auto& state : states) {
