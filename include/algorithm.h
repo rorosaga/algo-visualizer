@@ -16,7 +16,8 @@ namespace algorithm {
         INSERTION,
         MERGE,
         QUICK,
-        BOGO
+        BOGO,
+        STD
     };
 
     void randomNumberGen(std::vector<int>& arr, int size, int min, int max);

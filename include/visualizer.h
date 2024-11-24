@@ -3,7 +3,9 @@
 #include <iostream>
 #include <string>
 #include "algorithm.h"
+
 namespace visualizer {
+
     /**
      * @brief Constructor for the Visualizer class
      * @param width The width of the window
@@ -14,19 +16,31 @@ namespace visualizer {
      * @return A new instance of the Visualizer class
      * @note This is the base class constructor
      */
+    
+    enum AppState {
+        WELCOME_SCREEN,
+        SELECTION_SCREEN,
+        RUNNING,
+        COMPLETION,
+        EXIT
+    };
+
     template <typename Container>
     class Visualizer {
     public:
+        Visualizer(int width, int height, int speed, std::string heading);
+
         virtual void addState(const Container& array) = 0;
         virtual void visualize() = 0;
-        Visualizer(int width, int height, int speed, std::string heading);
 
     private:
         virtual void renderState(const Container& array) = 0;
+
     protected:
         sf::RenderWindow window;
         bool showWelcome = true;
         bool isPaused = false;
+        bool isInHome = false;
 
         std::vector<Container> states;
         int currentStep = 0;
@@ -39,57 +53,35 @@ namespace visualizer {
         sf::Font font;
     };
 
-    class SearchVisualizer : public Visualizer<std::vector<std::vector<int>>> {
-    public:
-        // Constructor: Initializes the window with the specified width and height.
-        SearchVisualizer(int width, int height, int speed, std::string heading);
-
-        // Adds a new state (array configuration) to be visualized.
-        void addState(const std::vector<std::vector<int>>& matrix) override;
-
-        // Runs through all stored states to visualize the search process.
-        void visualize() override;
-
-    private:
-        // Helper function to render a specific state of the matrix.
-        void renderState(const std::vector<std::vector<int>>& matrix) override;
-    };
-
-    // Visualizer without the select screen, needs to be used implemented with the main function code
+    // Updated SortVisualizer class with methods merged from SortVisualizer2
     class SortVisualizer : public Visualizer<std::vector<int>> {
     public:
-        // Constructor: Initializes the window with the specified width and height.
+        // Constructors: Initializes the window with the specified width and height.
+        SortVisualizer(int width, int height, int size, int speed);
         SortVisualizer(int width, int height, int size, int speed, std::string heading);
         SortVisualizer(int width, int height, int size, int speed, std::string heading, std::string timeComplexity);
 
         // Adds a new state (array configuration) to be visualized.
-        virtual void addState(const std::vector<int>& matrix) override;
+        void addState(const std::vector<int>& array) override;
 
         // Runs through all stored states to visualize the sort process.
-        virtual void visualize() override;
+        void visualize() override;
 
     private:
-        // Helper function to render a specific state of the matrix.
-        void renderState(const std::vector<int>& matrix) override;
+        // Helper functions to render specific states and screens.
+        void renderState(const std::vector<int>& array) override;
+        void showSelectScreen();
+        void showWelcomeScreen();
+        void visualizeSortingSteps();
+        void showCompletionScreen();
+        void prepareSorting();
 
         int size;
+        AppState appState;
         std::string timeComplexity;
+
+        // Added from SortVisualizer2
+        algorithm::SortType sortType = algorithm::SortType::UNINITIALIZED; // Default value
     };
 
-    // Visualizer with the select screen, simply create an instance of this object and call visualize to access everything
-    // This could be seen as an out of the box alternative to the SortVisualizer class
-    // It keeps all the functionalities, but adds a select screen to choose the sorting algorithm
-    class SortVisualizer2 : public Visualizer<std::vector<int>> {
-    public:
-        SortVisualizer2(int width, int height, int size, int speed);
-
-        virtual void addState(const std::vector<int>& matrix) override;
-        virtual void visualize() override;
-
-    private:
-        algorithm::SortType sortType = algorithm::SortType::UNINITIALIZED; // Default value;
-        std::string timeComplexity;
-        void renderState(const std::vector<int>& matrix) override;
-        void showSelectScreen();
-    };
 } // namespace visualizer
