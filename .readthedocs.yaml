@@ -1,0 +1,21 @@
+# .readthedocs.yaml
+# Read the Docs configuration file
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+
+# Required
+version: 2
+
+build:
+  os: "ubuntu-22.04"
+  tools:
+    python: "mambaforge-22.9" 
+
+  commands:
+    - mamba env create --file environment.yml
+    - mamba run -n visualizer cmake -B build -DCMAKE_BUILD_TYPE=Release
+    - mamba run -n visualizer cmake --build build --config Release
+    - mkdir -p $READTHEDOCS_OUTPUT/
+    - mv ./build/docs/sphinx/ $READTHEDOCS_OUTPUT/html
+
+conda:
+  environment: environment.yml  
