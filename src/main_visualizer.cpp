@@ -1,7 +1,6 @@
 #include "visualizer.h"
 #include "algorithm.h"
 #include <vector>
-#include <thread>
 
 
 using namespace visualizer;

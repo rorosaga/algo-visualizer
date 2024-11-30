@@ -4,6 +4,14 @@
 CMRC_DECLARE(algos_resources);
 
 namespace algos_resources{
+
+  /**
+   * @brief Get the resource file object
+   * 
+   * @param path
+   * @return auto
+   */
+
   auto getResourceFile(std::string path){
     auto fs = cmrc::algos_resources::get_filesystem();
     if(!fs.exists(path)){
