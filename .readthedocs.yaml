@@ -11,9 +11,9 @@ build:
     python: "mambaforge-22.9" 
 
   commands:
+    - mkdir build
     - mamba env create --file environment.yml
-    - mamba run -n visualizer cmake -B build -DCMAKE_BUILD_TYPE=Release
-    - mamba run -n visualizer cmake --build build --config Release
+    - cd build && mamba run -n visualizer cmake .. && mamba run -n visualizer cmake --build .
     - mkdir -p $READTHEDOCS_OUTPUT/
     - mv ./build/docs/sphinx/ $READTHEDOCS_OUTPUT/html
 
