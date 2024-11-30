@@ -219,6 +219,7 @@ namespace visualizer {
         appState = AppState::RUNNING;
     }
 
+    // Func to visualize depending to the appstate
     void SortVisualizer::visualize() {
         while (window.isOpen()) {
             switch (appState) {
@@ -242,7 +243,6 @@ namespace visualizer {
             }
         }
     }
-
     void SortVisualizer::showCompletionScreen() {
         sf::Event event;
 

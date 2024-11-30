@@ -10,8 +10,8 @@ add_library(visualizer STATIC visualizer.cpp)
 target_link_libraries(visualizer PRIVATE resources)
 
 
-# add_library(visualizer2 OBJECT visualizer2.cpp)
-# target_link_libraries(visualizer2 PRIVATE resources)
+add_library(abstract OBJECT abstract_visualizer.cpp)
+target_link_libraries(abstract PRIVATE resources)
 
 add_library(algorithm OBJECT algorithm.cpp)
 
@@ -19,7 +19,6 @@ add_library(algorithm OBJECT algorithm.cpp)
 add_executable(main_visualizer main_visualizer.cpp)
 target_link_libraries(main_visualizer PRIVATE visualizer resources algorithm)
 
-
-
-add_executable(test_algos test_algos.cpp)
-target_link_libraries(test_algos PRIVATE algorithm)
+# Main executable for abstract visualizer
+add_executable(main_abstract main_abstract.cpp)
+target_link_libraries(main_abstract PRIVATE abstract resources algorithm)
