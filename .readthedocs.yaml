@@ -13,7 +13,7 @@ build:
   commands:
     - mkdir build
     - mamba env create --file environment.yml
-    - ln -s /lib/x86_64-linux-gnu/libudev.so.1 $CONDA_PREFIX/lib/libudev.so.0
+    - ln -s $(mamba run -n visualizer which pip | rev | cut -d/ -f3- | rev)/lib/libudev.so.1 $(mamba run -n visualizer which pip | rev | cut -d/ -f3- | rev)/lib/libudev.so.0
     - cd build && mamba run -n visualizer cmake .. && mamba run -n visualizer make -j4 all
     - mkdir -p $READTHEDOCS_OUTPUT/
     - mv ./build/docs/sphinx/ $READTHEDOCS_OUTPUT/html
