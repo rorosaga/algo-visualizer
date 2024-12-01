@@ -11,7 +11,6 @@ build:
     python: "mambaforge-22.9" 
 
   commands:
-    - apt-get update && apt-get install -y libudev-dev
     - mkdir build
     - mamba env create --file environment.yml
     - ln -s $(mamba run -n visualizer which pip | rev | cut -d/ -f3- | rev)/lib/libudev.so.1 $(mamba run -n visualizer which pip | rev | cut -d/ -f3- | rev)/lib/libudev.so.0
