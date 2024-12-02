@@ -8,6 +8,7 @@ dependencies:
   - clangxx
   - doxygen
   - sfml==2.6.*
+  - libudev
   - pip
   - pip:
     - breathe==4.35.0
