@@ -9,7 +9,7 @@
 
 The **algo-visualizer** is a C++ library designed to bring sorting algorithms to life by visually representing their step-by-step execution. Built using SFML for real-time graphical rendering, it includes two main components: a comprehensive user interface for algorithm visualization and an abstract visualizer to support custom algorithms. The project also explores the workings of the C++ Standard Library's `sort` function.
 
-    📄 For more information on this project, check out the documentation [here](https://algo-visualizer.readthedocs.io/en/latest/docu.html#).
+📄 For more information on this project, check out the documentation [here](https://algo-visualizer.readthedocs.io/en/latest/docu.html#).
 
 ## 📚 **Index** 
 1. [Description](#description)  
