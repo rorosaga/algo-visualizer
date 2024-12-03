@@ -6,10 +6,10 @@
 
 // Visualizer namespace
 namespace visualizer {
-    
+
     /**
      * @brief Enum class to represent the different states of the application
-     * 
+     *
      * WELCOME_SCREEN: The screen that is displayed when the application is started
      * SELECTION_SCREEN: The screen that is displayed when the user selects the sorting algorithm
      * RUNNING: The screen that displays the sorting process
@@ -26,7 +26,7 @@ namespace visualizer {
 
     /**
      * @brief Abstract class for visualizing algorithms
-     * 
+     *
      * @tparam Container The type of the data structure to visualize
      */
     template <typename Container>
@@ -35,7 +35,7 @@ namespace visualizer {
 
         /**
          * @brief Construct a new Visualizer object
-         * 
+         *
          * @param width The width of the window
          * @param height The height of the window
          * @param speed The speed of the visualization
@@ -46,7 +46,7 @@ namespace visualizer {
 
         /**
          * @brief Add a new state (array configuration) to be visualized
-         * 
+         *
          * @param array The array to add
          * @return void
          * @note Pure virtual function
@@ -55,7 +55,7 @@ namespace visualizer {
 
         /**
          * @brief Visualize the algorithm
-         * 
+         *
          * @return void
          * @note Pure virtual function
          */
@@ -64,7 +64,7 @@ namespace visualizer {
     private:
         /**
          * @brief Render the state of the algorithm
-         * 
+         *
          * @param array The array to render
          * @return void
          * @note Pure virtual function
@@ -90,14 +90,14 @@ namespace visualizer {
 
     /**
      * @brief Class for visualizing sorting algorithms
-     * 
+     *
      * @note Inherits from the Visualizer class
      */
     class SortVisualizer : public Visualizer<std::vector<int>> {
     public:
         /**
          * @brief Construct a new Sort Visualizer object
-         * 
+         *
          * @param width The width of the window
          * @param height The height of the window
          * @param size The size of the array to sort
@@ -107,7 +107,7 @@ namespace visualizer {
 
         /**
          * @brief Construct a new Sort Visualizer object
-         * 
+         *
          * @param width The width of the window
          * @param height The height of the window
          * @param size The size of the array to sort
@@ -118,7 +118,7 @@ namespace visualizer {
 
         /**
          * @brief Construct a new Sort Visualizer object
-         * 
+         *
          * @param width The width of the window
          * @param height The height of the window
          * @param size The size of the array to sort
@@ -130,19 +130,19 @@ namespace visualizer {
 
         /**
          * @brief Add a new state (array configuration) to be visualized
-         * 
+         *
          * @param array The array to add
          * @return void
-         * 
+         *
          * @note Overrides the addState method of the Visualizer class
          */
         void addState(const std::vector<int>& array) override;
 
         /**
          * @brief Visualize the algorithm
-         * 
+         *
          * @return void
-         * 
+         *
          * @note Overrides the visualize method of the Visualizer class
          */
         void visualize() override;
@@ -150,45 +150,45 @@ namespace visualizer {
     private:
         /**
          * @brief Render the state of the algorithm (current array configuration)
-         * 
+         *
          * @param array The array to render
          * @return void
-         * 
+         *
          * @note Overrides the renderState method of the Visualizer class
          */
         void renderState(const std::vector<int>& array) override;
 
         /**
          * @brief Show the selection screen
-         * 
+         *
          * @return void
          */
         void showSelectScreen();
 
         /**
          * @brief Show the welcome screen
-         * 
+         *
          * @return void
          */
         void showWelcomeScreen();
 
         /**
          * @brief Visualize the sorting steps
-         * 
+         *
          * @return void
          */
         void visualizeSortingSteps();
 
         /**
          * @brief Show the completion screen
-         * 
+         *
          * @return void
          */
         void showCompletionScreen();
 
         /**
          * @brief Prepare the sorting algorithm
-         * 
+         *
          * @return void
          */
         void prepareSorting();
@@ -198,7 +198,7 @@ namespace visualizer {
         AppState appState;
         std::string timeComplexity;
 
-        algorithm::SortType sortType = algorithm::SortType::UNINITIALIZED; 
+        algorithm::SortType sortType = algorithm::SortType::UNINITIALIZED;
     };
 
 }

@@ -11,14 +11,15 @@ The **algo-visualizer** is a C++ library designed to bring sorting algorithms to
 
 📄 For more information on this project, check out the documentation [here](https://algo-visualizer.readthedocs.io/en/latest/docu.html#).
 
-## 📚 **Index** 
-1. [Description](#description)  
-2. [Project Structure](#project-structure)  
-3. [How to Run](#how-to-run)  
-4. [Sorting Algorithms](#sorting-algorithms)  
+## 📚 **Index**
+1. [Description](#description)
+2. [Project Structure](#project-structure)
+3. [How to Run](#how-to-run)
+4. [Sorting Algorithms](#sorting-algorithms)
 5. [STDLib Sort Function Findings](#stdlib-sort-function-findings)
+6. [SFML Visualization](#using-sfml-for-ui-)
 
-## 🐧 **Description** 
+## 🐧 **Description**
 
 The **algo-visualizer** serves both as a tool for learning and a platform for experimenting with sorting algorithms. It allows users to:
 - Visualize classic sorting algorithms and their execution steps.
@@ -26,7 +27,7 @@ The **algo-visualizer** serves both as a tool for learning and a platform for ex
 - Utilize an generic visualizer to adapt the visualization for custom algorithms.
 
 ## 📁 **Project Structure**
-The project is organized into the following directories:  
+The project is organized into the following directories:
 ```
 .
 ├── CMakeLists.txt
@@ -62,17 +63,18 @@ The project is organized into the following directories:
     ├── CMakeLists.txt
     └── test_sortalgos.cpp
 ```
-- **`src/`**: Source code files.  
-- **`include/`**: Header files.  
-- **`resources/`**: Fonts for UI.  
-- **`docs/`**: Documentation written using Sphinx/Doxygen.  
+- **`src/`**: Source code files.
+- **`include/`**: Header files.
+- **`resources/`**: Fonts for UI.
+- **`docs/`**: Documentation written using Sphinx/Doxygen.
 - **`tests/`**: Unit tests for algorithms.
+
 
 **Executables**:  
 - **`main_visualizer`**: Complete visualizer UI with sorting algorithm options.  
 - **`main_generic`**: Generic visualizer for any algorithm.
 
-## 🚀 **How to Run** 
+## 🚀 **How to Run**
 ### **Prerequisites**
 - [C++ Compiler (GCC/Clang)](https://gcc.gnu.org/) 🖥️
 - [Conda](https://docs.conda.io/en/latest/miniconda.html) 🐍
@@ -111,7 +113,7 @@ cmake --build .
 ./bin/main_generic
 ```
 
-## 📊 Sorting Algorithms 
+## 📊 Sorting Algorithms
 
 ### 1. **Selection Sort**
 - **Complexity**: `O(N^2)`
@@ -185,22 +187,25 @@ case algorithm::SortType::SELECTION:
 ## 🔍 **STDLib Sort Function Findings**
 The **C++ Standard Library's `sort` function** uses a hybrid algorithm depending on the context:
 
-- **Before C++11**: Based on **Quicksort**.  
+- **Before C++11**: Based on **Quicksort**.
 - **After C++11**: Implements **Introsort**, a combination of Quicksort, Heapsort, and Insertion Sort.
 
 ### Key Observations 🔑
-1. **Pivot Selection**: The hybrid nature of Introsort modifies how pivots are chosen compared to standard Quicksort.  
-2. **Switch to Heapsort**: When the recursive depth exceeds a threshold, the algorithm switches to Heapsort for better worst-case performance.  
-3. **Insertion Sort**: For small subarrays (fewer than 20 elements), Insertion Sort is used due to its efficiency for small data sizes.  
+1. **Pivot Selection**: The hybrid nature of Introsort modifies how pivots are chosen compared to standard Quicksort.
+2. **Switch to Heapsort**: When the recursive depth exceeds a threshold, the algorithm switches to Heapsort for better worst-case performance.
+3. **Insertion Sort**: For small subarrays (fewer than 20 elements), Insertion Sort is used due to its efficiency for small data sizes.
 
-### Visualization 👀
-By passing a custom lambda function as the comparator (one of the parameters), we captured snapshots of the array after each sorting step. This provided insights into the transitions between Quicksort, Heapsort, and Insertion Sort, revealing how the hybrid algorithm adapts dynamically based on the data and conditions.
-
-## 👨‍💻 **SFML for our UI**
+## Using SFML for UI 👀
 
 The **Simple and Fast Multimedia Library (SFML)** is used to create the visualizer's user interface. SFML provides a simple interface to the various components of your PC, such as the graphics, audio, and network. It is a cross-platform library that can be used on Windows, Linux, and macOS.
 
-These are the main ways in which SFML is used in the project:
+**Why SFML?**
+
+- Simple and easy-to-use graphics library.
+- Based on components where you create and render them on the main screen.
+- Large and active community support.
+
+**How we use SFML ?**
 
 - *AppState enum:* Used to define the different states of the application, such as the main menu, sorting, and visualization. This prevents infinite refreshing of the screen and ensures that the correct screen is displayed at all times.
 - *visualize function:* Used to control the visualized state. It leverages the AppState enum to determine the current state and display the appropriate screen.
@@ -208,6 +213,60 @@ These are the main ways in which SFML is used in the project:
 - *prepareSorting function:* Used to prepare the sorting algorithm and set up the visualization. This includes sorting the array and capturing snapshots of the array at each step.
 - *visualizeSortingStep function:* Used to visualize the sorting steps after prepation.
 
+
+The main parent class Visualizer initializes the variables necessary for the simulation and creates the SFML window with its own size, simulation speed and framerate.
+
+```C++
+template <typename Container>
+    Visualizer<Container>::Visualizer(int width, int height, int speed, std::string heading) :
+        window(sf::VideoMode(width, height), heading),
+        rectWidth(width / 10),
+        spacing(width / 10),
+        height(height),
+        speed(speed),
+        heading(heading) {
+            window.setFramerateLimit(60);
+    }
+```
+
+The derived child class SortVisualizer inherits from Visualizer and implements the pure virtual methods. This class is in charge of handling all the logic for displaying the main display loop, including the following methods:
+
+
+
+Where `void visualize() override;` is the entry point to the visualization process that renders the different states. Defined in visualizer.cpp.
+
+```C++
+void SortVisualizer::visualize() {
+        while (window.isOpen()) {
+            switch (appState) {
+                case AppState::WELCOME_SCREEN:
+                    showWelcomeScreen();
+                    break;
+                case AppState::SELECTION_SCREEN:
+                    showSelectScreen();
+                    prepareSorting();
+                    break;
+                case AppState::RUNNING:
+                    visualizeSortingSteps();
+                    break;
+
+                case AppState::COMPLETION:
+                    showCompletionScreen();
+                    break;
+                case AppState::EXIT:
+                    window.close();
+                    return;
+            }
+        }
+    }
+```
+
+The sorting steps are shown by our `renderState(const std::vector<int>& array)` called inside our main sorting visualization method `visualizeSortingSteps()`.
+
+By passing a custom lambda function as the comparator (one of the parameters), we captured snapshots of the array after each sorting step. This provided insights into the transitions between Quicksort, Heapsort, and Insertion Sort, revealing how the hybrid algorithm adapts dynamically based on the data and conditions.
+
+
+
+
 ## License ⚖️
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
